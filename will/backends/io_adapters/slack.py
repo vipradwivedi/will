@@ -518,7 +518,7 @@ class SlackBackend(IOBackend, SleepMixin, StorageMixin):
                             for e in events:
                                 tmp_event = e
                                 caca = self.normalize_incoming_event(tmp_event)
-                                logging.info("Normalized event %s", caca.data.__dict__)
+                                logging.info("Normalized event %s", caca)
                                 self.handle_incoming_event(e)
                                 logging.info("Handling event %s", str(e))
 
