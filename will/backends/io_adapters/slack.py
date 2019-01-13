@@ -516,6 +516,7 @@ class SlackBackend(IOBackend, SleepMixin, StorageMixin):
                         if len(events) > 0:
                             # TODO: only handle events that are new.
                             # print(len(events))
+                            for e in events:
                                 self.handle_incoming_event(e)
                                 logging.info("Handling event %s", str(e))
 
