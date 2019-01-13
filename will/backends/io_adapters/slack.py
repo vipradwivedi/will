@@ -519,6 +519,9 @@ class SlackBackend(IOBackend, SleepMixin, StorageMixin):
                             pubsub_event = self.pubsub.get_message()
                             logging.info("pubsub_event: %s", str(pubsub_event))
                             for e in events:
+                                tmp_event = e
+                                caca = self.normalize_incoming_event(tmp_event)
+                                logging.info("Normalized event %s", str(caca))
                                 self.handle_incoming_event(e)
                                 logging.info("Handling event %s", str(e))
 
