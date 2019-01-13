@@ -513,6 +513,8 @@ class SlackBackend(IOBackend, SleepMixin, StorageMixin):
                         if len(events) > 0:
                             # TODO: only handle events that are new.
                             # print(len(events))
+                            pubsub_event = self.pubsub.get_message()
+                            logging.info("pubsub_event: %s", str(pubsub_event))
                             for e in events:
                                 self.handle_incoming_event(e)
                                 logging.info("Handling event %s", str(e))
