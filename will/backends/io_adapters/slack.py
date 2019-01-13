@@ -513,13 +513,8 @@ class SlackBackend(IOBackend, SleepMixin, StorageMixin):
                         if len(events) > 0:
                             # TODO: only handle events that are new.
                             # print(len(events))
-                            pubsub_event = self.pubsub.get_message()
-                            for e in events:
-                                if e !=  pubsub_event:
-                                    self.handle_incoming_event(e)
-                                    logging.info("Handling event %s", str(e))
-                                else:
-                                    logging.info("Not handling new event %s", e)
+                                self.handle_incoming_event(e)
+                                logging.info("Handling event %s", str(e))
 
                         # Update channels/people/me/etc every 10s or so.
                         current_poll_count += 1
