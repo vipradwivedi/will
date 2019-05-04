@@ -12,5 +12,3 @@ yappi
 tox
 pytest
 pytest-cov
-pytest-mock
-freezegun

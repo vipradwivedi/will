@@ -29,15 +29,6 @@ class SlackMarkdownConverter(MarkdownConverter):
     def convert_strong(self, el, text):
         return '*%s*' % text if text else ''
 
-    def convert_a(self, el, text):
-        href = el.get('href')
-        title = el.get('title')
-        if self.options['autolinks'] and text == href and not title:
-            # Shortcut syntax
-            return '<%s>' % href
-        title_part = ' "%s"' % title.replace('"', r'\"') if title else ''
-        return '<%s%s|%s>' % (href, title_part, text or '') if href else text or ''
-
 
 class SlackBackend(IOBackend, SleepMixin, StorageMixin):
     friendly_name = "Slack"
@@ -356,7 +347,7 @@ class SlackBackend(IOBackend, SleepMixin, StorageMixin):
         })
         if hasattr(event, "kwargs") and "html" in event.kwargs and event.kwargs["html"]:
             data.update({
-                "parse": "none",
+                "parse": "full",
             })
 
         headers = {'Accept': 'text/plain'}
@@ -516,14 +507,8 @@ class SlackBackend(IOBackend, SleepMixin, StorageMixin):
                         if len(events) > 0:
                             # TODO: only handle events that are new.
                             # print(len(events))
-                            pubsub_event = self.pubsub.get_message()
-                            logging.info("pubsub_event: %s", str(pubsub_event))
                             for e in events:
-                                tmp_event = e
-                                caca = self.normalize_incoming_event(tmp_event)
-                                logging.info("Normalized event %s", caca)
                                 self.handle_incoming_event(e)
-                                logging.info("Handling event %s", str(e))
 
                         # Update channels/people/me/etc every 10s or so.
                         current_poll_count += 1
